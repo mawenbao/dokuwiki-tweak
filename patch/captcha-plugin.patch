@@ -1,0 +1,117 @@
+diff --git a/plugin-captcha/action.php b/plugin-captcha/action.php
+index ea728a2..d6e71ca 100755
+--- a/plugin-captcha/action.php
++++ b/plugin-captcha/action.php
+@@ -53,8 +53,37 @@ class action_plugin_captcha extends DokuWiki_Action_Plugin {
+                                        'handle_editform_output',
+                                        array('editform' => false, 'oldhook' => false));
+         }
++		
++		if($this->getConf('loginprotect')){
++            $controller->register_hook('AUTH_LOGIN_CHECK',
++                                       'BEFORE',
++                                       $this,
++                                       'handle_loginform_check',
++                                       array('editform' => false, 'oldhook' => false));
++			
++			$controller->register_hook('HTML_LOGINFORM_OUTPUT',
++                                       'BEFORE',
++                                       $this,
++                                       'handle_editform_output',
++                                       array('editform' => false, 'oldhook' => false));
++
++        }
+     }
+ 
++	/** 
++	 * Check captcha of login form
++	 */
++	function handle_loginform_check(&$event, $param){
++		if(!('login' == $_POST['do'] && $this->getConf('loginprotect'))) {
++			return;
++		}
++		
++		$helper = plugin_load('helper','captcha');
++        if(!$helper->check()){
++			$event->preventDefault();
++		}
++	}
++	
+     /**
+      * Will intercept the 'save' action and check for CAPTCHA first.
+      */
+diff --git a/plugin-captcha/conf/default.php b/plugin-captcha/conf/default.php
+index 6c667a4..7d1eafb 100755
+--- a/plugin-captcha/conf/default.php
++++ b/plugin-captcha/conf/default.php
+@@ -8,5 +8,6 @@
+ $conf['mode']       = 'js';
+ $conf['forusers']   = 0;
+ $conf['regprotect'] = 1;
++$conf['loginprotect'] = 1;
+ $conf['width']      = 115;
+ $conf['height']     = 22;
+diff --git a/plugin-captcha/conf/metadata.php b/plugin-captcha/conf/metadata.php
+index 8b28944..eab3663 100755
+--- a/plugin-captcha/conf/metadata.php
++++ b/plugin-captcha/conf/metadata.php
+@@ -6,6 +6,7 @@
+  */
+ 
+ $meta['mode']       = array('multichoice','_choices' => array('js','text','image','audio','figlet'));
++$meta['loginprotect'] = array('onoff');
+ $meta['regprotect'] = array('onoff');
+ $meta['forusers']   = array('onoff');
+ $meta['width']      = array('numeric','_pattern' => '/[0-9]+/');
+diff --git a/plugin-captcha/helper.php b/plugin-captcha/helper.php
+index 56e84bd..6a4c0cb 100755
+--- a/plugin-captcha/helper.php
++++ b/plugin-captcha/helper.php
+@@ -97,8 +97,9 @@ class helper_plugin_captcha extends DokuWiki_Plugin {
+      * page revision.
+      */
+     function _fixedIdent(){
+-        global $ID;
+-        $lm = @filemtime(wikiFN($ID));
++        //global $ID;
++        $ID = getID();  // use getID instead
++		$lm = @filemtime(wikiFN($ID));
+         return auth_browseruid().
+                auth_cookiesalt().
+                $ID.$lm;
+diff --git a/plugin-captcha/lang/en/settings.php b/plugin-captcha/lang/en/settings.php
+index 8b39b87..07ec4af 100755
+--- a/plugin-captcha/lang/en/settings.php
++++ b/plugin-captcha/lang/en/settings.php
+@@ -12,6 +12,7 @@ $lang['mode_o_image']  = "Image (bad accessibility)";
+ $lang['mode_o_audio']  = "Image+Audio (better accessibility)";
+ $lang['mode_o_figlet'] = "Figlet ASCII Art (bad accessibility)";
+ 
++$lang['loginprotect'] = "Protect the login form as well?";
+ $lang['regprotect'] = "Protect the registration form as well?";
+ $lang['forusers']   = "Use CAPTCHA for logged in users, too?";
+ $lang['width']      = "Width of the CAPTCHA image (pixel)";
+diff --git a/plugin-captcha/lang/zh/lang.php b/plugin-captcha/lang/zh/lang.php
+index e5bf609..7541c50 100755
+--- a/plugin-captcha/lang/zh/lang.php
++++ b/plugin-captcha/lang/zh/lang.php
+@@ -6,6 +6,6 @@
+  */
+ 
+ $lang['testfailed']  = "抱歉，您输入的验证码不正确。";
+-$lang['fillcaptcha'] = "请在输入框中填入验证码以证明您不是机器人。";
++$lang['fillcaptcha'] = "请输入右边的验证码";
+ $lang['soundlink']   = "如果您无法阅读图片中的字母，请下载此 .wav 文件。";
+ 
+diff --git a/plugin-captcha/lang/zh/settings.php b/plugin-captcha/lang/zh/settings.php
+index 9581650..1180c22 100755
+--- a/plugin-captcha/lang/zh/settings.php
++++ b/plugin-captcha/lang/zh/settings.php
+@@ -12,6 +12,7 @@ $lang['mode_o_image']  = "图片 (无障碍性差)";
+ $lang['mode_o_audio']  = "图片+音频 (更好的无障碍性)";
+ $lang['mode_o_figlet'] = "Figlet ASCII 艺术 (无障碍性差)";
+ 
++$lang['loginprotect'] = "同时保护登录表单吗?";
+ $lang['regprotect'] = "同时保护注册表单吗？";
+ $lang['forusers']   = "对已登入的用户也适用吗？";
+ $lang['width']      = "验证码图片宽度 (像素)";
