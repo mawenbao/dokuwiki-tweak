@@ -6,6 +6,7 @@
  */
 
 $meta['mode']       = array('multichoice','_choices' => array('js','text','image','audio','figlet'));
+$meta['loginprotect'] = array('onoff');
 $meta['regprotect'] = array('onoff');
 $meta['forusers']   = array('onoff');
 $meta['width']      = array('numeric','_pattern' => '/[0-9]+/');

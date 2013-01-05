@@ -8,5 +8,6 @@
 $conf['mode']       = 'js';
 $conf['forusers']   = 0;
 $conf['regprotect'] = 1;
+$conf['loginprotect'] = 1;
 $conf['width']      = 115;
 $conf['height']     = 22;

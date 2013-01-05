@@ -97,8 +97,9 @@ class helper_plugin_captcha extends DokuWiki_Plugin {
      * page revision.
      */
     function _fixedIdent(){
-        global $ID;
-        $lm = @filemtime(wikiFN($ID));
+        //global $ID;
+        $ID = getID();  // use getID instead
+		$lm = @filemtime(wikiFN($ID));
         return auth_browseruid().
                auth_cookiesalt().
                $ID.$lm;

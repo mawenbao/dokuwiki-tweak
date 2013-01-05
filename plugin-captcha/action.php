@@ -53,8 +53,37 @@ class action_plugin_captcha extends DokuWiki_Action_Plugin {
                                        'handle_editform_output',
                                        array('editform' => false, 'oldhook' => false));
         }
+		
+		if($this->getConf('loginprotect')){
+            $controller->register_hook('AUTH_LOGIN_CHECK',
+                                       'BEFORE',
+                                       $this,
+                                       'handle_loginform_check',
+                                       array('editform' => false, 'oldhook' => false));
+			
+			$controller->register_hook('HTML_LOGINFORM_OUTPUT',
+                                       'BEFORE',
+                                       $this,
+                                       'handle_editform_output',
+                                       array('editform' => false, 'oldhook' => false));
+
+        }
     }
 
+	/** 
+	 * Check captcha of login form
+	 */
+	function handle_loginform_check(&$event, $param){
+		if(!('login' == $_POST['do'] && $this->getConf('loginprotect'))) {
+			return;
+		}
+		
+		$helper = plugin_load('helper','captcha');
+        if(!$helper->check()){
+			$event->preventDefault();
+		}
+	}
+	
     /**
      * Will intercept the 'save' action and check for CAPTCHA first.
      */
