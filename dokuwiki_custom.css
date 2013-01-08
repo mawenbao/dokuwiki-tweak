@@ -1,0 +1,13 @@
+/* scrool sidebar toc */
+.sidebar-absolute {
+    width: 160px;
+    position: absolute;
+}
+
+.sidebar-fixed {
+    top: 10px;
+    width: 160px;
+    position: fixed;
+    overflow-y: auto;
+    height: 90%;
+}
