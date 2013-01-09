@@ -1377,9 +1377,11 @@ textarea,
   #border-left: 1px dashed __background__; /* invisible border triggers IE to render the stuff */
 }
 /* list style: MSIE 6/7 */
+/*
 div#panel div.portal div.body ul {
   #list-style: none outside none !important;
 }
+*/
 form#page__revisions ul, /* old, until 2012-01-25 */
 form#dw__recent ul,      /* old, until 2012-01-25 */
 form.changes {           /* new, since 2012-09-10 */
