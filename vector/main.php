@@ -482,7 +482,7 @@ if (file_exists(DOKU_TPLINC."lang/".$conf["lang"]."/style.css")){
 }
 ?>
 <!--[if lt IE 7]><style type="text/css">body{behavior:url("<?php echo DOKU_TPL; ?>static/3rd/vector/csshover.htc")}</style><![endif]-->
-<link rel="stylesheet" type="text/css" href="http://static.atime.me/css/dokuwiki_custom.min.css" />
+<link rel="stylesheet" type="text/css" href="https://wiki.atime.me/static/dokuwiki_custom.min.css" />
 </head>
 <body class="<?php
              //different styles/backgrounds for different page types
@@ -853,6 +853,6 @@ if (file_exists(DOKU_TPLINC."/user/tracker.php")){
     include DOKU_TPLINC."/user/tracker.php";
 }
 ?>
-<script type="text/javascript" src="http://static.atime.me/js/dokuwiki_custom_footer.min.js"></script>
+<script type="text/javascript" src="https://wiki.atime.me/static/dokuwiki_custom_footer.min.js"></script>
 </body>
 </html>
