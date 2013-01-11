@@ -1003,8 +1003,10 @@ div#content a[href ^="gopher://"] {
 }
 div#content a[href ^="https://"],
 .link-https {
-	/* background: url(static/3rd/vector/lock-icon.png) center right no-repeat; */
+	/* 
+    background: url(static/3rd/vector/lock-icon.png) center right no-repeat;
 	padding: 0 13px 0 0;
+    */
 }
 div#content a[href ^="mailto:"],
 .link-mailto {
